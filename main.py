@@ -1,4 +1,5 @@
 import random
+from datetime import date
 from flask import Flask, render_template, request, make_response, redirect, url_for, flash
 from models import User, db
 
@@ -7,7 +8,7 @@ app.secret_key = ("super-secret-key")
 
 db.create_all()
 
-@app.route("/", methods=["GET"])
+@app.route("/", methods=["GET", "POST"])
 def index():
     email_address = request.cookies.get("email")
     if email_address:
@@ -21,19 +22,20 @@ def index():
 def login():
     name = request.form.get("name")
     email = request.form.get("email")
-
+    today = date.today()
     secret_number = random.randint(1, 30)
 
     user = db.query(User).filter_by(email=email).first()
 
     if not user:
-        user = User(name=name, email=email, secret_number=secret_number)
+        user = User(name=name, email=email, secret_number=secret_number, date=today)
         db.add(user)
         db.commit()
 
-    response = make_response(redirect(url_for('index')))
+    response = make_response(redirect(url_for('un')))
     response.set_cookie("email", email)
-
+    response.set_cookie("name", name)
+    response.set_cookie("date", today.strftime("%d/%m/%Y"))
     return response
 
 
@@ -60,3 +62,19 @@ def game():
         flash(message)
 
     return render_template("result.html", message=message)
+def click():
+    attempts = 0
+    attempts +=1
+    print(attempts)
+
+@app.route("/user", methods=["GET", "POST"])
+def un():
+    username = request.cookies.get("name")
+    input_name = request.form.get("name")
+    if username == input_name:
+        response = make_response(redirect(url_for('index')))
+        return response
+    else:
+        message = f"Wrong username, try again!"
+        flash(message)
+    return render_template("user.html", message=message)
