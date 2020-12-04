@@ -1,0 +1,26 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-primary alert-dismissible fade show" role="alert">
+          {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+        <p>Please login with your username to continue where did you left.</p>
+        <form method="post" action="/user">
+            <div class="form-group">
+            <label for="input_name">Your username: </label>
+            <input type="text" name="name" class="form-control" id="input_name">
+      </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+{% endblock content %}
