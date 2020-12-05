@@ -3,8 +3,10 @@
 
 {% block content %}
     {% if user and user.secret_number %}
-        <p>In this guessing game you will find secret number between 1 and 30. Let's begin!</p>
-        <p>You are logged in as: {{ user.name }}, you registered at: {{ user.date }}</p>
+        <h5>In this guessing game you will find secret number between 1 and 30. Let's begin!</h5>
+        <p class="lead"><em>You are logged in as: {{ user.name }}, you registered at: {{ user.date }}</em></p>
+        <h5><span class="badge badge-secondary" style="background-color: Green; color: white;">Your best score is: {{ user.best_score }}</span></h5>
+        </br>
         <form method="post" action="/result">
             <div class="form-group">
             <label for="guess">Your guess: </label>

@@ -10,3 +10,5 @@ class User(db.Model):
     email = db.Column(db.String, unique=True)
     secret_number = db.Column(db.Integer, unique=False)
     date = db.Column(db.DateTime)
+    attempts = db.Column(db.Integer)
+    best_score = db.Column(db.Integer)
